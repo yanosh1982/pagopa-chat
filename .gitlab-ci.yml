@@ -57,3 +57,27 @@ Deploy_tag:
     - 'mvn $MAVEN_CLI_OPTS deploy' 
   only: 
     - tags
+    
+Build-Docker-Image:
+  stage: Deploy
+  services:
+    - name: registry.gitlab.informatica.aci.it/ccsc/images/docker/dind/stable
+      alias: docker
+  before_script:
+    - export IMAGE_NAME=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+    - echo $IMAGE_NAME
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  after_script:
+    - docker logout $CI_REGISTRY
+    - docker rmi $CI_REGISTRY_IMAGE
+  script:
+    - echo $CI_REGISTRY_IMAGE
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME
+    - docker tag $IMAGE_NAME $CI_REGISTRY_IMAGE
+    - docker push $CI_REGISTRY_IMAGE
+  tags:
+    - dind
+  only:
+    - tags
+

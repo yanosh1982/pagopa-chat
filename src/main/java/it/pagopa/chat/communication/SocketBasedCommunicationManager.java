@@ -15,7 +15,7 @@ public class SocketBasedCommunicationManager implements ClientSideCommunicationM
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SocketBasedCommunicationManager.class);
 
-	private ConcurrentHashMap<String, Socket> activeClients;
+	private Map<String, Socket> activeClients;
 	
 
 	public SocketBasedCommunicationManager() {
