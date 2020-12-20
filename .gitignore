@@ -1,0 +1,11 @@
+bin/
+build/
+target/
+classes/
+.settings/
+.apt_generated/
+.project
+.classpath
+.factorypath
+**/*.class
+.svn

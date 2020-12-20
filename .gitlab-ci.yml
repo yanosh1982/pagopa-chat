@@ -1,0 +1,59 @@
+stages:
+  - Code_Analysis
+  - Build
+  - Deploy
+
+before_script:
+  - id
+  - export http_proxy=http://10.64.8.133:8080
+  - export https_proxy=https://10.64.8.133:8080
+  - export no_proxy=registry.gitlab.informatica.aci.it,gitlab.informatica.aci.it
+
+variables:
+  MAVEN_CLI_OPTS: "--settings ./settings.xml --batch-mode -Dmaven.repo.local=/.m2/repository -DskipTests"
+
+cache:
+  paths:
+    - .m2/repository
+
+Code_Analysis:
+  image: maven:3.5.2-jdk-8
+  stage: Code_Analysis
+  tags:
+    - docker
+  script:
+    - 'mvn $MAVEN_CLI_OPTS verify sonar:sonar'
+  #only:
+  #  - /^release-.*/
+  #  - /^hotfix-.*/
+
+Maven_Install:
+  image: maven:3.5.2-jdk-8
+  stage: Build
+  tags:
+    - docker
+  script:
+    - 'mvn $MAVEN_CLI_OPTS install'
+  only:
+    - /^release-.*/
+    - /^hotfix-.*/
+
+Deploy_snapshot:
+  image: maven:3.5.2-jdk-7
+  stage: Deploy
+  tags:
+    - docker            
+  script:
+    - 'mvn $MAVEN_CLI_OPTS deploy' 
+  only:
+    - develop
+
+Deploy_tag:
+  image: maven:3.5.2-jdk-7
+  stage: Deploy
+  tags:
+    - docker
+  script:
+    - 'mvn $MAVEN_CLI_OPTS deploy' 
+  only: 
+    - tags

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<settings
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd"
+	xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<servers>
+		<server>
+			<id>repository.artifacts.releases</id>
+			<username>ci-pra</username>
+			<password>AP6C6Hfv2cXDVbrHd1EceULwWe5SVwbaAUVA3s</password>
+		</server>
+		<server>
+			<id>repository.artifacts.snapshots</id>
+			<username>ci-pra</username>
+			<password>AP6C6Hfv2cXDVbrHd1EceULwWe5SVwbaAUVA3s</password>
+		</server>
+		<server>
+			<id>scm-server</id>
+			<username>d.vaccaro</username>
+			<password>yufh9wLktunMN_VEU2gK</password>
+		</server>
+	</servers>
+	<mirrors>
+		<mirror>
+			<mirrorOf>*,!snapshots</mirrorOf>
+			<url>http://artifactory.aciinfo.local/artifactory/mvn/</url>
+			<id>artifactory</id>
+		</mirror>
+	</mirrors>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<repositories>
+				<repository>
+					<releases />
+					<snapshots />
+					<id>central</id>
+					<url>http://central</url>
+				</repository>
+				<repository>
+					<releases><enabled>false</enabled></releases>
+					<snapshots><enabled>true</enabled></snapshots>
+					<id>snapshots</id>
+					<url>http://artifactory.aciinfo.local/artifactory/mvn-snapshot/</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<releases />
+					<snapshots />
+					<id>central</id>
+					<url>http://central</url>
+				</pluginRepository>
+			</pluginRepositories>
+			<properties>
+				<sonar.host.url>http://sonarqube.aciinfo.local</sonar.host.url>
+				<sonar.login>f492466b1703e4165804ee3b5287fc7bfc7b9eb4</sonar.login>
+			</properties>
+		</profile>
+	</profiles>
+	<activeProfiles>
+		<activeProfile>default</activeProfile>
+	</activeProfiles>
+</settings>
